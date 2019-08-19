@@ -1,0 +1,261 @@
+<!doctype html>
+
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="style 01.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="print.css" type="text/css" media="print" />
+	<title>RetroGame</title>
+</head>
+
+<body>
+<div id="contour_page"> <!-- début de "contour_page" -->
+
+<nav><!-- nav -->
+	<div class="menu">
+		<ul>
+			<li><a href="Dons.html">Dons</a></li>
+			<li><a href="Page - Casse Briques (clavier).html">Casse-Briques (clavier)</a></li>
+			<li><a href="Page - Casse Briques (souris).html">Casse-Briques (souris)</a></li>
+			<li><a href="Page - Morpion (2 joueurs).html">Morpion</a></li>
+			<li><a href="Accueil.html">Accueil</a></li>
+			
+		</ul>
+	</div>
+</nav><!-- fin du nav -->
+		 
+
+<article>
+<body background="body.jpeg">
+</Br>
+</Br>
+<H3> <P align="center"> <font color="#000000">Jouez avec vôtre souris.</P>
+<P align="center"> A chaque mort, la balle repartira du milieu et vous perdrez une vie, BONNE CHANCE !</font></P> </H3>
+</Br>
+</Br>
+</Br>
+ <!-- On crée la taille du canvas  -->
+<canvas id="myCanvas" width="480" height="320"
+style="background: url(FondCanvas.jpg) no-repeat center center;
+border:2px solid #000000;">
+<p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
+</canvas>
+
+<div class="cadre du jeu">
+       <canvas width="400" height="75" class="canvas jeu" id="jeu">
+       </canvas>
+       <div class="menu jeu">
+               <!-- les elements du menu -->
+       </div>
+</div>
+
+
+<script> // On va inclure le Js ici ! 
+
+ // Les variables
+
+	// Ajout de la référence canvas présent dans javascript 
+	var canvas = document.getElementById("myCanvas"); // Cette variable nous permet d'utiliser le Canvas 
+    var dessin = canvas.getContext("2d"); // La variable dessins, sera la pour nous permettre de faire des dessins en 2d 
+
+	var ballColision = 10; // On définit la zone entourant la balle de diamètre 10
+	
+	var x = canvas.width/2;   // La boule aura une position de base de largeur diviser par 2 
+	var y = canvas.height-10; // La boule aura une position de base de 30 pixel de distance avec le bas 
+	
+	var dx = 2; // On affecte a x et y une valeur après chaque interval pour donner un mouvement a la balle
+	var dy = -2; 
+	
+	var raquetteHeight = 10; //On définit des variables qui donneront la forme de la raquette 
+	var raquetteWidth = 75;
+	var raquetteX = (canvas.width-raquetteWidth)/2; //Et aussi le déplacement de la raquette
+
+	//Caractéristiques des briques
+	var briqueRowCount = 3; //Nombre de lignes de briques 
+	var briqueColumnCount = 5; // Combien par colonnes
+	var briqueWidth = 75; //Leur largeur
+	var briqueHeight = 20; //Leur hauteur
+	var briquePadding = 10; // la distance entre chaque brique
+	var briqueOffsetTop = 30; // La distance avec le haut du canvas et les briques
+	var briqueOffsetLeft = 30; // La distance avec la zone gauche du canvas et les briques 
+	
+	var score=0; // On définit a 0 une variable d'un score!
+	
+	var vies=2; // On définit les vies d'un joueur
+  
+	// Toutes les briques sont contenues dans ce tableaux contenant les colonnes de briques(c) et les rangées de briques (r) contenant à leur tour des objets contenant x et y qui serviront à peindre les briques et aussi pour leur collision
+	var briques =  [ ] ; 
+		for ( c = 0 ; c < briqueColumnCount ; c ++ )  { 
+			briques [ c ]  =  [ ] ; 
+			for ( r = 0 ; r < briqueRowCount ; r ++ )  { 
+				briques [ c ] [ r ]  =  { x:0, y:0, status:1} ; // On ajoute a chaque briques un status = à 1
+			} 
+	}
+	
+	
+	  // La lecture de la variable pour la souris
+	document.addEventListener("mousemove", mouseMoveHandler, false);
+
+	function mouseMoveHandler(e) { 
+		var relativeX = e.clientX - canvas.offsetLeft; //e.clientX correspond aux déplacements horizontaux de la souris
+		if(relativeX > 0 && relativeX < canvas.width) {
+			raquetteX = relativeX - raquetteWidth/2; // on met donc en relation le deplacement de la raquette, avec la souris, sans qu'elle ne puisse aller vers le haut 
+		}
+	}
+	
+
+	// Fonction de collision d'une boucle à trvers toutes les briques 
+	function collisionDetection() {
+		for(c=0; c<briqueColumnCount; c++) {
+			for(r=0; r<briqueRowCount; r++) {
+				var b = briques[c][r]; // On crée une variable contenant les briques 
+				if(b.status == 1) { // SI le status par défault qui est 1 (les briques sont coloré à ce moment la) alors la boucle s'ouvre 
+					if(x > b.x && x < b.x+briqueWidth && y > b.y && y < b.y+briqueHeight) { // à ce moment on regarde si la boule touche une des briques contenue dans var b, si oui alors ; 
+						dy = -dy; // La boule prendra un sens opposé
+						b.status = 0; // Tandis que la brique prendra le statut 1, elle ne sera donc pas peinte et n'y crée. Ce qui fait qu'elle se fera supprimé.
+						score++; // De plus à chaque fois qu'on détruit une brique on reçois un point!
+					    if(score == briqueRowCount*briqueColumnCount) { // Si le score est égal au nombres total de briques alors
+							alert("Tu as gagné le premier niveau, attention voici le deuxième! Clique sur ''ok'' pour le lancer ou sur entrer")
+							location.href="Page - Casse Briques (souris) 2.html"
+						}
+					}
+				}
+            }
+        }
+    }
+	
+	
+	//Les dessins
+	//La balle
+	function drawBall() { // On définit la boulle bleu et ces caractéristiques
+		dessin.beginPath();
+		dessin.arc(x, y, ballColision, 0, Math.PI*2); // Le ballRadius est ajoute a la balle 
+		dessin.fillStyle = "#28262B";
+		dessin.fill();
+		dessin.closePath();
+	}
+
+	// La raquette
+	function drawRaquette() { //On définit ensuite la raquette qui aura la forme d'un rectangle
+		dessin.beginPath();
+		dessin.rect(raquetteX, canvas.height-raquetteHeight, raquetteWidth, raquetteHeight);
+		dessin.fillStyle = "#432F53";
+		dessin.fill();
+		dessin.closePath();
+	}
+	
+	
+	//On dessine les briques à condition qu'il n'en est pas 
+	function drawBriques() {
+		for(c=0; c<briqueColumnCount; c++) {
+			for(r=0; r<briqueRowCount; r++) {
+				if(briques[c][r].status == 1) { // Les briques ne seront coloré que si le status = 1
+					var briqueX = (c*(briqueWidth+briquePadding))+briqueOffsetLeft; // Les briques sont positionées grâce aux variables des briques crée ci-dessus, ici par rapport à leurs largeurs pour les colonnes ainsi que la distance avec le haut du canvas
+					var briqueY = (r*(briqueHeight+briquePadding))+briqueOffsetTop; // et ici par rapport a leurs hauteurs par rapport aux rangées de briques ainsi que la distance avec la zone gauche du canvas
+					briques[c][r].x = briqueX; // On place des briques avec la distance calculé plus haut dans le tableaux pour les colonnes et les rangées 
+					briques[c][r].y = briqueY; // Pareil ici 
+					dessin.beginPath();
+					dessin.rect(briqueX, briqueY, briqueWidth, briqueHeight); //On a plus quand remplir les rectangles des briques avec les délimitation fait plus tôt.
+					dessin.fillStyle = "#A96BAA";
+					dessin.fill();
+					dessin.closePath();
+				}
+			}
+		}
+	}
+	
+	//On créer une fonction définissant le score
+	function drawScore() {
+		dessin.font = "16px Arial";
+		dessin.fillStyle = "#151098";
+		dessin.fillText("Score: "+score+"/15", 8, 20);
+	}
+	
+	// On crée une fonction définissant les vies
+	function drawVies() {
+		dessin.font = "16px Arial";
+		dessin.fillStyle = "#151098";
+		dessin.fillText("Vies: "+vies, canvas.width-65, 20);
+	}
+	
+	
+	//Et le dessins total en animation, le jeux quoi.
+	function draw() { 
+		dessin.clearRect(0, 0, canvas.width, canvas.height); // On enlève les traces bleus des anciennes positions des boulles 
+		drawBall(); //On désinne la boule dans le jeux
+		drawRaquette(); // On dessine la raquette
+		drawBriques ( ) ; // Les briques 
+		collisionDetection(); // et on ajoute la fonction de collision de la briques avec la boules qui a été fait précedeement 
+		drawScore(); // On déssine le score
+		drawVies(); //On dessine les vies 
+	
+	
+	//(Ligne de code détaillé)
+//	if(y + dy < 0) { // Si la balle touche le mur du haut on fait l'opposé du mouvement de la balle ce qui fait que la balle ira dans le sens opposé ( en sachant que le haut du canvas équivaut à 0)
+   // dy = -dy;
+	//}
+
+	//if(y + dy > canvas.height) { // En sachant que le bord inférieur est le max du canvas, on fait la même manipulation que ci dessus pour le haut or c'est pour le bas.
+   // dy = -dy;
+//}
+
+		// En simplifié en rajoutant pour droite et gauche et en utilisant l'axe x cette fois ci. De plus on rajoute ballRadius pour définir que quand la zone de la balle rentre en colision avec le mur elle change de direction et non pas le centre de la balle.
+		if(x + dx > canvas.width-ballColision || x + dx < ballColision) {
+			dx = -dx;
+		}
+		
+		if(y + dy < ballColision) {
+			dy = -dy;
+		}
+		
+		
+		else  if( y + dy > canvas.height-ballColision )  {  //Si la balle touche le mur du bas
+			if(x > raquetteX && x < raquetteX + raquetteWidth)  {  // SI la raquette est à l'endroit de la chute alors 
+				dy =  -dy; // La balle prendra un sens opposé
+			} 	
+			else { // Deux possibilités
+				vies--;  // Si le stocke de vie est épuisé alors le jeux s'arrête 
+				if(!vies) {
+					alert("Tu as perdu, retente ta chance ici!");
+					location.href="Page - Casse Briques (souris).html"
+				}
+			else { // Sinon on replace la balle à l'endroit d'origine
+				x = canvas.width/2;
+				y = canvas.height-30;
+				dx = 2;
+				dy = -2;
+				paddleX = (canvas.width-paddleWidth)/2;
+				}
+			} 
+		}
+
+	
+	  x += dx;// on met a jour x et y avec notre dx et dy variable sur chaque image pour que la balle garde sa couleur 
+	  y += dy;
+	
+	}
+	
+// dessine le code tous les 10 milisecondes ( donne l'impression d'un mouvement) 
+	setInterval(draw, 10);	
+</script>
+
+<div align="center"> <audio src="DEAF KEV - Invincible.mp3" autoplay controls>Veuillez mettre à jour votre navigateur !</audio> </div> <!-- Pour mettre une musique de fond -->
+</Br>
+</Br>
+</article>
+
+<style> <!-- On inclus le css ici -->
+	* { padding: 0; margin: 0; }
+    	canvas { display: block; margin: 0 auto; } <!-- On centre le canvas un peu -->
+</style>
+
+<footer>
+	<aside>
+		<p>Design By PierreSamy <br />
+		<a href="Cv.html"> samypierre.com</a> <br /> 
+		&copy; 2016 </p>
+	</aside>
+</footer>
+</body>
+</html>

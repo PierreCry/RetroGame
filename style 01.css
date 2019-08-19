@@ -1,0 +1,175 @@
+/*Style 01.css*/
+
+
+/* Définition par défaut des balises élémentaires */
+
+a:link, a:visited /* couleur des liens */
+{
+	color:#333;
+}
+a:hover, a:active /* couleur des liens */
+{
+	color: #e26e2b;
+}
+
+/*---------------------------- */
+
+#header{
+	margin:0;
+	height: 80px; /* hauteur du nav */
+	background: rgb(85,93,94); /* couleur de fond */
+	font-size: 26px; /* définie la taille des caractères */
+	text-align:center;
+}
+
+
+
+/* Définition du contenue de la balise body */
+
+body 
+{
+	background-image:url(Fond.jpg); /* image de fond */
+	font-family: Verdana, Arial, Helvetica, sans-serif; /* type de police des écritures */
+	font-size: 12px; /* définie la taille des caractères */
+	line-height: 15px; /* définie la hauteur de la ligne */
+}
+
+#contour_page 
+{
+	width: 940px; /* largeur du body */
+	margin: 0 auto; /* centrage du body */
+	margin-top: 20px; /* décalage par rapport au haut */
+	margin-bottom: 20px; /* décalage par rapport au bas */
+}
+
+/*-----------------------------------*/
+
+
+/*	***************************
+	Début du MENU DE NAVIGATION 
+	*************************** */
+
+/* Définition du bloc nav */
+
+nav
+{
+	width: 940px; /* largeur du nav */
+	height: 30px; /* hauteur du nav */
+	margin: 0 auto; /* distance de marge entre les balises et l'extrèmité */
+	background: #FFFFFF; /* couleur de fond */
+	font-size: 12px; /* définie la taille des caractères */
+	font-weight: bold; /* défnie le style des caractères (gras ici) */
+}
+
+/*----------------------------*/
+
+/* propriétés du bloc nav */
+
+nav ul  /* gestion des listes non ordonnées du nav */
+{
+	padding: 8px 0 0 20px; /* définie la position des ul dans le nav */
+}
+
+nav li  /* gestion des items du nav */
+{
+	display: block; /* place les li en ligne */
+	float: right; /* place les li de gauche à droite */
+}
+
+nav a:link, nav a:visited  /* gestion des liens du nav */
+{
+	padding: 0px 10px; /* distance entre les liens */
+	text-decoration: none; /* permet de ne pas mettre de decoration au lien (pas de souligné) */
+	color: #A40000; /* couleur des liens */
+}
+
+nav a:hover, nav a:active  /* gestion des liens du nav */
+{
+	color: #e26e2b /* couleur des liens */
+}
+
+/*----------------------------*/
+
+/*---- Fin du MENU DE NAVIGATION ----*/
+
+
+/*	***************************
+		Début du HEADER 
+	*************************** */
+	
+header 
+{
+	width: 700px; /* largeur du header */
+	height:420px; /* hauteur du header */
+	margin: 0 auto; /* définie la position des élèments du header */
+}
+
+/*---- Fin du HEADER ----------*/
+
+/*	***************************
+		Début du FOOTER
+	*************************** */
+	
+footer 
+{
+	width: 940px; /* largeur du footer */
+	height: 60px; /* hauteur du footer */
+	margin: 0 auto; /* définie la position des élèments du footer */
+	background: #FFFFFF; /* couleur de fond */
+	font-size: 80%; /* définie la taille des caractères */
+}
+
+/*----------------------------*/
+
+/* propriétés du FOOTER */
+
+footer aside
+{
+	float: right; /* place les élèments sur la droite */
+	margin-right: 15px; /* définie le décalage des élèmetents sur l'extrémité droite */
+}
+
+footer a:link, footer a:visited 
+{
+	color: #e26e2b; /* couleur du lien */
+}
+
+footer p 
+{
+	margin-top: 5px; /* définie la position des textes */
+}
+
+/*----------------------------*/
+
+/*---- Fin du FOOTER ----*/
+
+
+/*	***************************
+		Début du MAIN
+	*************************** */
+
+#main 
+{
+	width: 940px; /* largeur du main */
+	margin: 0 auto; /* centrage du main */
+	padding-top: 30px;  /* distance entre le haut du main et le bas du header */
+	background: #EF0D0D; /* couleur de fond */
+	overflow: hidden; /* cacher les contenues qui dépassent du main */
+}
+
+#content 
+{
+	float: right; /* place le contenue sur la droite */
+	width: 720px; /* largeur du content */
+}
+
+/** ARTICLES **/
+
+article
+{
+	background-image:url(Body.jpeg) /* image de fond */
+}
+
+/*----------------------------*/
+
+/*---- fin du MAIN ----------*/

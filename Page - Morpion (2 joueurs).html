@@ -1,0 +1,248 @@
+<!doctype html>
+
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="style 01.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="print.css" type="text/css" media="print" />
+	<title>RetroGame</title>
+</head>
+
+<body>
+<div id="contour_page"> <!-- début de "contour_page" -->
+
+<nav><!-- nav -->
+	<div class="menu">
+		<ul>
+			<li><a href="Dons.html">Dons</a></li>
+			<li><a href="Page - Casse Briques (clavier).html">Casse-Briques (clavier)</a></li>
+			<li><a href="Page - Casse Briques (souris).html">Casse-Briques (souris)</a></li>
+			<li><a href="Page - Morpion (2 joueurs).html">Morpion</a></li>
+			<li><a href="Accueil.html">Accueil</a></li>
+			
+		</ul>
+	</div>
+</nav><!-- fin du nav -->
+		
+
+<script language="javascript">
+//Définition des toutes les variables.
+var joueur=0; /* Si "joueur=0", alors c'est le joueur 1 qui va jouer. Si "joueur=1", 
+alors c'est le joueur 2 qui va jouer. */
+var valeurdecase=" "; //Variable qui détermine la valeur de la case sélectionnée.
+var victoire1=0; //Variable du nombre de vivtoire du joueur 1.
+var victoire2=0; //Variable du nombre de victoire du joueur 2.
+
+//Fonction qui permet de passer d'un joueur à l'autre.
+function changementdejoueur() {
+joueur++;	//La variable "joueur" prend la valeur joueur+1... 
+if(joueur==2) joueur=0;} /* Si "joueur=2" alors la variable repasse à 0,
+et donc, on a "joueur=0" et c'est de nouveau le tour du joueur 1. */
+
+//Fonction qui permet d'afficher les X et les O dans le tableau
+function affichage(selectiondecase) {
+//Détermination du caractère (X ou O) en fonction du joueur (1 ou 2)
+if(joueur==0) valeurdecase="X";
+else valeurdecase="O";
+
+//La case 0 prend la valeur valeurdecase défini aux lignes supérieurs
+if(selectiondecase==0) {
+document.morpion.case0.value=valeurdecase;}
+//La case 1 prend la valeur valeurdecase défini aux lignes supérieurs
+if(selectiondecase==1) {
+document.morpion.case1.value=valeurdecase;}
+//La case 2 prend la valeur valeurdecase défini aux lignes supérieurs
+if(selectiondecase==2) {
+document.morpion.case2.value=valeurdecase;}
+//La case 3 prend la valeur valeurdecase défini aux lignes supérieurs
+if(selectiondecase==3) {
+document.morpion.case3.value=valeurdecase;}
+//La case 4 prend la valeur valeurdecase défini aux lignes supérieurs
+if(selectiondecase==4) {
+document.morpion.case4.value=valeurdecase;}
+//La case 5 prend la valeur valeurdecase défini aux lignes supérieurs
+if(selectiondecase==5) {
+document.morpion.case5.value=valeurdecase;}
+//La case 6 prend la valeur valeurdecase défini aux lignes supérieurs
+if(selectiondecase==6) {
+document.morpion.case6.value=valeurdecase;}
+//La case 7 prend la valeur valeurdecase défini aux lignes supérieurs
+if(selectiondecase==7) {
+document.morpion.case7.value=valeurdecase;}
+//La case 8 prend la valeur valeurdecase défini aux lignes supérieurs
+if(selectiondecase==8) {
+document.morpion.case8.value=valeurdecase;}
+}
+
+//Fonction qui permet la vérification des combinaisons à chaque nouvelle action des joueurs
+function gagnant(jeu) {
+var fin=new Array(); /*La valeur de la variable fin correspond aux cases du tableau. Par exemple fin[0] correspond à la première case. */
+for(var i=0;i!=3;i++) {	/*La variable i représente le numéro de la case. Il y a 9 cases : 3 en lignes, 3 en colonnes et 3 en diagonales. Avant de commencer la vérification, on a 0<i<3. */
+
+//Vérification des lignes
+if(jeu[i*3]==jeu[i*3+1]&&jeu[i*3]==jeu[i*3+2]&&jeu[i*3]!=" ")
+	{fin[0]=1;fin[1]=jeu[i*3];}
+	
+//Vérification des colonnes
+if(jeu[i]==jeu[i+3]&&jeu[i]==jeu[i+6]&&jeu[i]!=" ") 
+	{fin[0]=1;fin[1]=jeu[i];}
+}
+
+//Vérification des diagonales
+if(jeu[0]==jeu[4]&&jeu[0]==jeu[8]&&jeu[0]!=" ") 
+	{fin[0]=1;fin[1]=jeu[0];}
+if(jeu[2]==jeu[4]&&jeu[2]==jeu[6]&&jeu[2]!=" ") 
+	{fin[0]=1;fin[1]=jeu[2];}
+	
+//S'il n'y a pas de gagnant, il vérifie si la grille est pleine
+if(fin[0]==0) {
+var nbvides=0;
+for(var w=0;w!=9;w++) if(jeu[w]==" ") nbvides++;
+if(nbvides==0) fin[0]=1;}
+return fin;
+}
+
+//Fonction qui affiche une phrase désignant le vainqueur en fonction des résultats de la partie
+function affichagegagnant(gagnant) {
+var p="LE JOUEUR ";
+if(gagnant=="X"||gagnant=="O") {
+//Si "X" est gagnant alors on affiche "le joueur 1" et on atribue la victoire au joueur 1
+if(gagnant=="X") {p+="1";victoire1++;}
+//Sinon (si "O" est gagnant), on affiche "le joueur 2" et on atribue la victoire au joueur 2
+else {p+="2";victoire2++;}
+//On ajoute le therme "a gagné" à la fin de la phrase
+p+=" A GAGNE!";}
+alert(p);
+jeufini=1;
+}
+
+//Fonction qui met en place la grille avec les 9 cases 
+function grille() {
+var jeu=new Array();
+jeu[0]=document.morpion.case0.value;
+jeu[1]=document.morpion.case1.value;
+jeu[2]=document.morpion.case2.value;
+jeu[3]=document.morpion.case3.value;
+jeu[4]=document.morpion.case4.value;
+jeu[5]=document.morpion.case5.value;
+jeu[6]=document.morpion.case6.value;
+jeu[7]=document.morpion.case7.value;
+jeu[8]=document.morpion.case8.value;
+return jeu;}
+
+//Fonction permettant d'afficher le numéro du joueur
+function affjoueursuiv() {
+document.morpion.joueursuiv.value="Joueur"+" "+(joueur+1);}
+
+/*Fonction permettant d'afficher le nombre de victoire 
+pour les deux joueurs et le nombre de match nul*/
+function affvictoires() {
+document.morpionscore.info1.value=victoire1;
+document.morpionscore.info2.value=victoire2;}
+
+//Fonction gérant le déroulement du jeu
+function jouer(selectiondecase) {
+if(jeufini==0) {
+
+	var jeu=grille();								//Exécution de la fonction grille	
+	if(jeu[selectiondecase]==" ") {
+		affichage(selectiondecase);					//Exécution de la fonction affichage(selectiondecase)
+		jeu=grille();
+		changementdejoueur();						//Exécution de la fonction changejoueur
+	var fin=gagnant(jeu);
+		affjoueursuiv();							//Exécution de la affjoueursuiv
+			if(fin[0]==1) affichagegagnant(fin[1]);
+	affvictoires();}								//Exécution de la fonction affvictoires
+
+else alert("LA CASE EST DEJA OCCUPEE");}
+}
+
+//Fonction permettant de relancer une partie
+function newgame() {
+document.morpion.case0.value=" "; //La case 0 prend la valeur " "
+document.morpion.case1.value=" "; //La case 1 prend la valeur " "
+document.morpion.case2.value=" "; //La case 2 prend la valeur " "
+document.morpion.case3.value=" "; //La case 3 prend la valeur " "
+document.morpion.case4.value=" "; //La case 4 prend la valeur " "
+document.morpion.case5.value=" "; //La case 5 prend la valeur " "
+document.morpion.case6.value=" "; //La case 6 prend la valeur " "
+document.morpion.case7.value=" "; //La case 7 prend la valeur " "
+document.morpion.case8.value=" "; //La case 8 prend la valeur " "
+document.morpion.joueursuiv.value="Joueur"+" "+(joueur+1);
+affvictoires();										//Exécution de la fonction affvictoires 
+jeufini=0;
+}
+
+//Fonction qui initialise le jeu au chargement de la page
+function ouvrir() {
+newgame();}											//Exécution de la fonction newgame
+</script>
+	
+<style type="text/css">
+a:link {color: blue;}
+a:visited {color: blue;}
+a:hover {color: orange;}
+a:active {color: orange;}
+
+p{font-weight:bold;
+color:black;}
+</style>
+
+<article>
+</br>
+</br>
+<p align="center">Jouez avec votre souris</br>
+Cliquez sur les cases quand c'est à votre tour</br>
+Le joueur 1 asigné au X</br>
+Le joueur 2 est assigné au O</p>
+</br>
+<body onLoad="ouvrir()">	
+</body>
+<div align="center">
+  <form name="morpion" method="post" action="">
+    <p>
+      <input type="button" name="joueursuiv" value="">
+    </p>
+	<p><a href="#" onClick="newgame()">Nouvelle partie</a></p>
+    <table border="50" cellspacing="50" bgcolor="white">
+		<tr>
+			<td><input name="case0" type="button" value=" " onClick="jouer('0')"></td>
+			<td><input name="case1" type="button" value=" " onClick="jouer('1')"></td>
+			<td><input name="case2" type="button" value=" " onClick="jouer('2')"></td>
+		</tr>
+		<tr>
+			<td><input name="case3" type="button" value=" " onClick="jouer('3')"></td>
+			<td><input name="case4" type="button" value=" " onClick="jouer('4')"></td>
+			<td><input name="case5" type="button" value=" " onClick="jouer('5')"></td>
+		</tr>
+		<tr>
+			<td><input name="case6" type="button" value=" " onClick="jouer('6')"></td>
+			<td><input name="case7" type="button" value=" " onClick="jouer('7')"></td>
+			<td><input name="case8" type="button" value=" " onClick="jouer('8')"></td>
+		</tr>
+    </table>
+  </form>
+  
+  <form name="morpionscore" method="post" action="">
+	<br/>
+	<p>Victoires du joueur 1 : 
+	<input name="info1" type="text" value="" size="2" disabled>
+	</p>
+	<p>Victoires du joueur 2 :
+	<input name="info2" type="text" value="" size="2" disabled>
+	</p>
+  </form>
+ <div align="center"> <audio src="Spooky Scary Skeletons (Remix) - Extended Mix.mp3" autoplay controls>Veuillez mettre à jour votre navigateur !</audio> </div>
+</div>
+</article>
+
+<footer>
+	<aside>
+		<p>Design By PierreSamy <br />
+		<a href="Cv.html"> samypierre.com</a> <br /> 
+		&copy; 2016 </p>
+	</aside>
+</footer>
+</body>
+</html>
